@@ -1,0 +1,3 @@
+include cothermo_socket\64bit\COThermoSocket.Core.dll
+include cothermo_socket\32bit\COThermoSocket.Core.dll
+include cothermo_socket\UOMSet.json

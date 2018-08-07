@@ -1,0 +1,60 @@
+{
+    "Unitless":[],
+
+    "Length":[
+                {"LongName":"meter", "ShortName":"m", "FactorA":1.0},
+                {"LongName":"kilometer", "ShortName":"km", "FactorA":1e3},
+                {"LongName":"decimeter", "ShortName":"dm", "FactorA":0.1},
+                {"LongName":"centimeter", "ShortName":"cm", "FactorA":1e-2},
+                {"LongName":"millimeter", "ShortName":"mm", "FactorA":1e-3},
+                {"LongName":"micrometer", "ShortName":"μm", "FactorA":1e-6},
+                {"LongName":"mile", "ShortName":"mile", "FactorA":1609.344},
+                {"LongName":"inch", "ShortName":"in", "FactorA":0.0254},
+                {"LongName":"foot", "ShortName":"ft", "FactorA":0.3048}
+            ],
+
+    "Temperature":[
+                    {"LongName":"kelvin", "ShortName":"K", "FactorA":1.0},
+                    {"LongName":"celsius", "ShortName":"C", "FactorA":1.0, "FactorB":273.15},
+                    {"LongName":"fahrenheit", "ShortName":"F", "FactorA":0.55555556, "FactorB":255.37222},
+                    {"LongName":"rankine", "ShortName":"R", "FactorA":0.55555556}
+                ],
+
+    "Pressure":[
+                    {"LongName":"pascal", "ShortName":"Pa", "FactorA":1.0},
+                    {"LongName":"newton/square meter", "ShortName":"N/sqm", "FactorA":1.0},
+                    {"LongName":"kilopascal ", "ShortName":"kPa", "FactorA":1e3},
+                    {"LongName":"bar", "ShortName":"bar ", "FactorA":1e5},
+                    {"LongName":"millibar", "ShortName":"mbar ", "FactorA":1e2},
+                    {"LongName":"microbar", "ShortName":"μbar", "FactorA":0.1},
+                    {"LongName":"psi", "ShortName":"psi", "FactorA":6894.7572932},
+                    {"LongName":"atm", "ShortName":"atm", "FactorA":101325},
+                    {"LongName":"millimeter mercury", "ShortName":"mm-Hg", "FactorA":133.322},
+                    {"LongName":"millimeter water", "ShortName":"mm-water", "FactorA":9.80638}
+                ],
+
+    "MolarDensity":[
+                    {"LongName":"mole/cubic", "ShortName":"mol/cum", "FactorA":1.0},
+                    {"LongName":"kilomole/cubic meter", "ShortName":"kmol/cum", "FactorA":1e3},
+                    {"LongName":"mole/cubic centimeter", "ShortName":"mol/cc", "FactorA":1e-6},
+                    {"LongName":"mole/liter", "ShortName":"mol/l", "FactorA":1e-3}
+                ],
+
+    "MassDensity":[
+                    {"LongName":"kilogram/cubic", "ShortName":"kg/cum", "FactorA":1.0},
+                    {"LongName":"gram/cubic meter", "ShortName":"g/cum", "FactorA":1e-3}
+                ],
+
+    "MolarEnthalpy":[
+                    {"LongName":"joule/mole", "ShortName":"J/mol", "FactorA":1.0},
+                    {"LongName":"kilojoule/kilomole", "ShortName":"kJ/kmol", "FactorA":1.0},
+                    {"LongName":"kilojoule/mole", "ShortName":"kJ/mol", "FactorA":1e3}
+                ],
+
+    "MassEnthalpy":[
+                    {"LongName":"joule/gram", "ShortName":"J/g", "FactorA":1.0},
+                    {"LongName":"kilojoule/kilomole", "ShortName":"kJ/kg", "FactorA":1.0},
+                    {"LongName":"kilojoule/gram", "ShortName":"kJ/g", "FactorA":1e3}
+                ]
+
+}

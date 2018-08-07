@@ -328,3 +328,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/cothermo_socket/dist
+/cothermo_socket/cothermo_socket.egg-info
+/cothermo_socket/.vscode
