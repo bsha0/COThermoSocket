@@ -106,10 +106,10 @@ namespace COThermoSocket.Test
             Console.WriteLine(mo.GetMolWeight(new[] { 0.2, 0.2, 0.2, 0.2, 0.2 }));
 
             Console.WriteLine("------------ GetMolarEnthalpy------------------");
-            Console.WriteLine(mo.MixtureProperty(30 + 273.15, 101325.0, new[] { 0.2, 0.2, 0.2, 0.2, 0.2 }, "density", Phase.Vapor));
+            Console.WriteLine(mo.MixtureProperty(30 + 273.15, 101325.0, new[] { 0.2, 0.2, 0.2, 0.2, 0.2 }, "density", Phases.Vapor));
 
 
-            mo.FlashTP(30 + 273.15, 101325.0, new[] { 0.2, 0.2, 0.2, 0.2, 0.2 });
+            mo.Flash(FlashTypes.TP, 30 + 273.15, 101325.0, new[] { 0.2, 0.2, 0.2, 0.2, 0.2 });
 
             Console.WriteLine(mo.Vf);
             #endregion

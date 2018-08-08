@@ -11,15 +11,14 @@ t = UOM(UOMs.Temperature, 30, 'C')
 p = 101325.0
 z = (0.2, 0.2, 0.2, 0.2, 0.2)
 
-print(isinstance(t,UOM))
 print(thermo.components)
 print(thermo.get_MolWeights())
 print(thermo.get_MolWeight(z))
-(t, p, vf, x, y, z) = thermo.flash(FlashType.TP, t, p, z)
-for name, member in PropName.__members__.items():
-    print(thermo.get_MixtureProperty(t, p, y, member, Phase.Vapor, Basis.Mole))
-    print(thermo.get_MixtureProperty(t, p, y, member, Phase.Vapor, Basis.Mass))
+(t, p, vf, x, y) = thermo.flash(FlashTypes.TP, t, p, z)
+for name, member in Properties.__members__.items():
+    print(thermo.get_MixtureProperty(t, p, y, member, Phases.Vapor, Bases.Mole))
+    print(thermo.get_MixtureProperty(t, p, y, member, Phases.Vapor, Bases.Mass))
 
-val = thermo.get_MixtureProperty(t, p, y, PropName.Density, Phase.Vapor, Basis.Mole)
+val = thermo.get_MixtureProperty(t, p, y, Properties.Density, Phases.Vapor, Bases.Mole)
 print(val.units)
 print(val.get_value('kmol/cum'))

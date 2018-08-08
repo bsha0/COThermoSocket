@@ -13,7 +13,7 @@ from enum import IntEnum
 sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from uom import *
 
-class Phase(IntEnum):
+class Phases(IntEnum):
     Vapor = 0
     Liquid = 1
     Liquid2 = 2
@@ -21,18 +21,19 @@ class Phase(IntEnum):
     Overall = 4
 
 
-class Basis(IntEnum):
+class Bases(IntEnum):
     Mole = 0
     Mass = 1
     Undefined = 2
 
 
-class PropName(IntEnum):
+class Properties(IntEnum):
     Density = 0
     Enthalpy = 1
+    Volume = 2
 
 
-class FlashType(IntEnum):
+class FlashTypes(IntEnum):
     TP = 0
     PH = 1
     TH = 2
@@ -97,23 +98,28 @@ class COThermo_Socket(object):
 
     def get_PropertyUom(self, prop, basis):
         # density
-        if prop == PropName.Density and basis == Basis.Mole:
+        if prop == Properties.Density and basis == Bases.Mole:
             return dict(uom=UOMs.MolarDensity, unit='mol/cum', ismultiply=True)
-        elif prop == PropName.Density and basis == Basis.Mass:
+        elif prop == Properties.Density and basis == Bases.Mass:
             return dict(uom=UOMs.MassDensity, unit='g/cum', ismultiply=True)
         # Enthalpy
-        elif prop == PropName.Enthalpy and basis == Basis.Mole:
+        elif prop == Properties.Enthalpy and basis == Bases.Mole:
             return dict(uom=UOMs.MolarEnthalpy, unit='J/mol', ismultiply=True)
-        elif prop == PropName.Enthalpy and basis == Basis.Mass:
+        elif prop == Properties.Enthalpy and basis == Bases.Mass:
             return dict(uom=UOMs.MassEnthalpy, unit='J/g', ismultiply=False)
+        # Volume
+        elif prop == Properties.Volume and basis == Bases.Mole:
+            return dict(uom=UOMs.MolarVolume, unit='cum/mol', ismultiply=True)
+        elif prop == Properties.Volume and basis == Bases.Mass:
+            return dict(uom=UOMs.MassVolume, unit='cum/g', ismultiply=False)
         # Unitless
         else:
             return dict(uom=UOMs.Unitless, unit=None, ismultiply=True)
 
     def get_MixtureProperty(self, t, p, z, prop, phase, basis):
-        '''get mixture property(density/)'''
+        '''get mixture property(density/enthalpy) in single phase.'''
         multiplier = 1
-        if basis == Basis.Mass:
+        if basis == Bases.Mass:
             multiplier = self.get_MolWeight(z)
         prop_uom = self.get_PropertyUom(prop, basis)
         if prop_uom['ismultiply']:
@@ -142,29 +148,8 @@ class COThermo_Socket(object):
             raise Exception(f'invalid argument parm2 {parm2}')
 
         self._mo.Flash(flashtype, parm1, parm2, z)
-        return (self._mo.T, self._mo.P, self._mo.Vf, tuple(self._mo.X), tuple(self._mo.Y), tuple(self._mo.Z))
+        return (self._mo.T, self._mo.P, self._mo.Vf, tuple(self._mo.X), tuple(self._mo.Y))
 
 
 if __name__ == "__main__":
-    thermo = COThermo_Socket()
-    print(thermo.pkgmgrs)
-    thermo.pkgmgr = thermo.pkgmgrs[0]
-    print(thermo.pkgs)
-    thermo.pkg = thermo.pkgs[3]
-
-    # t = 30 + 273.15
-    t = UOM(UOMs.Temperature, 30, 'C')
-    p = 101325.0
-    z = (0.2, 0.2, 0.2, 0.2, 0.2)
-
-    print(thermo.components)
-    print(thermo.get_MolWeights())
-    print(thermo.get_MolWeight(z))
-    (t, p, vf, x, y, z) = thermo.flash(FlashType.TP, t, p, z)
-    for name, member in PropName.__members__.items():
-        print(thermo.get_MixtureProperty(t, p, y, member, Phase.Vapor, Basis.Mole))
-        print(thermo.get_MixtureProperty(t, p, y, member, Phase.Vapor, Basis.Mass))
-
-    val = thermo.get_MixtureProperty(t, p, y, PropName.Density, Phase.Vapor, Basis.Mole)
-    print(val.units)
-    print(val.get_value('kmol/cum'))
+    pass

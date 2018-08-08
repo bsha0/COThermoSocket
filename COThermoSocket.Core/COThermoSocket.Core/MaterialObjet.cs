@@ -45,19 +45,19 @@ namespace COThermoSocket.Core
 
         public void GetOverallProp(string property, string basis, ref object results)
         {
-            if (basis == null) basis = Basis.Undefined.ToString();
-            string key = string.Join(".", Phase.Overall.ToString().ToLower(), property.ToLower(), basis.ToLower());
+            if (basis == null) basis = Bases.Undefined.ToString();
+            string key = string.Join(".", Phases.Overall.ToString().ToLower(), property.ToLower(), basis.ToLower());
             results = _propVals[key];
         }
 
         public void GetOverallTPFraction(ref double temperature, ref double pressure, ref object composition)
         {
-            GetTPFraction(Phase.Overall.ToString(), ref temperature, ref pressure, ref composition);
+            GetTPFraction(Phases.Overall.ToString(), ref temperature, ref pressure, ref composition);
         }
 
         public void GetPresentPhases(ref object phaseLabels, ref object phaseStatus)
         {
-            string[] phasenames = Enum.GetNames(typeof(Phase));
+            string[] phasenames = Enum.GetNames(typeof(Phases));
             phaseLabels = phasenames;
             eCapePhaseStatus[] stats = new eCapePhaseStatus[phasenames.Length];
             for (int i = 0; i < phasenames.Length; i++)
@@ -85,15 +85,15 @@ namespace COThermoSocket.Core
         public void GetTPFraction(string phaseLabel, ref double temperature, ref double pressure, ref object composition)
         {
             object vals = null;
-            GetSinglePhaseProp("temperature", phaseLabel, Basis.Undefined.ToString(), ref vals);
+            GetSinglePhaseProp("temperature", phaseLabel, Bases.Undefined.ToString(), ref vals);
             temperature = (vals as double[])[0];
 
             vals = null;
-            GetSinglePhaseProp("pressure", phaseLabel, Basis.Undefined.ToString(), ref vals);
+            GetSinglePhaseProp("pressure", phaseLabel, Bases.Undefined.ToString(), ref vals);
             pressure = (vals as double[])[0];
 
             vals = null;
-            GetSinglePhaseProp("fraction", phaseLabel, Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", phaseLabel, Bases.Mole.ToString(), ref vals);
             composition = vals;
         }
 
@@ -104,7 +104,7 @@ namespace COThermoSocket.Core
 
         public void SetOverallProp(string property, string basis, object values)
         {
-            string key = string.Join(".", Phase.Overall.ToString().ToLower(), property.ToLower(), basis.ToLower());
+            string key = string.Join(".", Phases.Overall.ToString().ToLower(), property.ToLower(), basis.ToLower());
             if (_propVals.ContainsKey(key))
             {
                 _propVals[key] = values;
@@ -136,7 +136,7 @@ namespace COThermoSocket.Core
 
         public void SetSinglePhaseProp(string property, string phaseLabel, string basis, object values)
         {
-            if (basis == null) basis = Basis.Undefined.ToString();
+            if (basis == null) basis = Bases.Undefined.ToString();
             string key = string.Join(".", phaseLabel.ToLower(), property.ToLower(), basis.ToLower());
             if (_propVals.ContainsKey(key))
             {
@@ -519,7 +519,7 @@ namespace COThermoSocket.Core
             return Array.ConvertAll(mws, o => (double)o);
         }
 
-        public double MixtureProperty(double t, double p, double[] z, string property, Phase phase)
+        public double MixtureProperty(double t, double p, double[] z, string property, Phases phase)
         {
             T = t;
             P = p;
@@ -527,38 +527,38 @@ namespace COThermoSocket.Core
 
             object vals = null;
             string phaseLabel = phase.ToString();
-            if (phase == Phase.Overall)
+            if (phase == Phases.Overall)
             {
                 throw new Exception("'overall' is not a valid phase.");
             }
             else
             {
-                SetSinglePhaseProp("temperature", phaseLabel, Basis.Undefined.ToString(), new[] { t });
-                SetSinglePhaseProp("pressure", phaseLabel, Basis.Undefined.ToString(), new[] { p });
-                SetSinglePhaseProp("fraction", phaseLabel, Basis.Mole.ToString(), z);
+                SetSinglePhaseProp("temperature", phaseLabel, Bases.Undefined.ToString(), new[] { t });
+                SetSinglePhaseProp("pressure", phaseLabel, Bases.Undefined.ToString(), new[] { p });
+                SetSinglePhaseProp("fraction", phaseLabel, Bases.Mole.ToString(), z);
                 CalcSinglePhaseProp(new[] { property }, phaseLabel);
-                GetSinglePhaseProp(property, phaseLabel, Basis.Mole.ToString(), ref vals);
+                GetSinglePhaseProp(property, phaseLabel, Bases.Mole.ToString(), ref vals);
             }
             return (vals as double[])[0];
         }
 
-        public void Flash(FlashType flashType, double parm1, double parm2, double[] z)
+        public void Flash(FlashTypes flashType, double parm1, double parm2, double[] z)
         {
             switch (flashType)
             {
-                case FlashType.TP:
+                case FlashTypes.TP:
                     FlashTP(parm1, parm2, z);
                     break;
-                case FlashType.PH:
+                case FlashTypes.PH:
                     FlashPH(parm1, parm2, z);
                     break;
-                case FlashType.TH:
+                case FlashTypes.TH:
                     FlashTH(parm1, parm2, z);
                     break;
-                case FlashType.TVf:
+                case FlashTypes.TVf:
                     FlashTVf(parm1, parm2, z);
                     break;
-                case FlashType.PVf:
+                case FlashTypes.PVf:
                     FlashPVf(parm1, parm2, z);
                     break;
                 default:
@@ -572,22 +572,22 @@ namespace COThermoSocket.Core
             P = p;
             Z = z;
 
-            SetOverallProp("temperature", Basis.Undefined.ToString(), new[] { t });
-            SetOverallProp("pressure", Basis.Undefined.ToString(), new[] { p });
-            SetOverallProp("fraction", Basis.Mole.ToString(), z);
+            SetOverallProp("temperature", Bases.Undefined.ToString(), new[] { t });
+            SetOverallProp("pressure", Bases.Undefined.ToString(), new[] { p });
+            SetOverallProp("fraction", Bases.Mole.ToString(), z);
 
             CalcEquilibrium(new[] { "temperature" }, new[] { "pressure" }, "Normal");
 
             object vals = null;
-            GetSinglePhaseProp("fraction", Phase.Liquid.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Liquid.ToString(), Bases.Mole.ToString(), ref vals);
             X = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("fraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Y = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("phasefraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("phasefraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Vf = (vals as double[])[0];
         }
 
@@ -596,26 +596,26 @@ namespace COThermoSocket.Core
             P = p;
             Z = z;
 
-            SetOverallProp("pressure", Basis.Undefined.ToString(), new[] { p });
-            SetOverallProp("enthalpy", Basis.Undefined.ToString(), new[] { h });
-            SetOverallProp("fraction", Basis.Mole.ToString(), z);
+            SetOverallProp("pressure", Bases.Undefined.ToString(), new[] { p });
+            SetOverallProp("enthalpy", Bases.Undefined.ToString(), new[] { h });
+            SetOverallProp("fraction", Bases.Mole.ToString(), z);
 
             CalcEquilibrium(new[] { "pressure" }, new[] { "enthalpy" }, "Normal");
 
             object vals = null;
-            GetSinglePhaseProp("fraction", Phase.Liquid.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Liquid.ToString(), Bases.Mole.ToString(), ref vals);
             X = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("fraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Y = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("phasefraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("phasefraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Vf = (vals as double[])[0];
 
             vals = null;
-            GetOverallProp("temperature", Basis.Undefined.ToString(), ref vals);
+            GetOverallProp("temperature", Bases.Undefined.ToString(), ref vals);
             T = (vals as double[])[0];
         }
 
@@ -624,26 +624,26 @@ namespace COThermoSocket.Core
             T = t;
             Z = z;
 
-            SetOverallProp("temperature", Basis.Undefined.ToString(), new[] { t });
-            SetOverallProp("enthalpy", Basis.Undefined.ToString(), new[] { h });
-            SetOverallProp("fraction", Basis.Mole.ToString(), z);
+            SetOverallProp("temperature", Bases.Undefined.ToString(), new[] { t });
+            SetOverallProp("enthalpy", Bases.Undefined.ToString(), new[] { h });
+            SetOverallProp("fraction", Bases.Mole.ToString(), z);
 
             CalcEquilibrium(new[] { "temperature" }, new[] { "enthalpy" }, "Normal");
 
             object vals = null;
-            GetSinglePhaseProp("fraction", Phase.Liquid.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Liquid.ToString(), Bases.Mole.ToString(), ref vals);
             X = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("fraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Y = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("phasefraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("phasefraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Vf = (vals as double[])[0];
 
             vals = null;
-            GetOverallProp("pressure", Basis.Undefined.ToString(), ref vals);
+            GetOverallProp("pressure", Bases.Undefined.ToString(), ref vals);
             P = (vals as double[])[0];
         }
 
@@ -653,22 +653,22 @@ namespace COThermoSocket.Core
             Vf = vf;
             Z = z;
 
-            SetOverallProp("temperature", Basis.Undefined.ToString(), new[] { t });
-            SetOverallProp("phasefraction", Basis.Mole.ToString(), new[] { vf });
-            SetOverallProp("fraction", Basis.Mole.ToString(), z);
+            SetOverallProp("temperature", Bases.Undefined.ToString(), new[] { t });
+            SetOverallProp("phasefraction", Bases.Mole.ToString(), new[] { vf });
+            SetOverallProp("fraction", Bases.Mole.ToString(), z);
 
             CalcEquilibrium(new[] { "temperature" }, new[] { "phasefraction" }, "Normal");
 
             object vals = null;
-            GetSinglePhaseProp("fraction", Phase.Liquid.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Liquid.ToString(), Bases.Mole.ToString(), ref vals);
             X = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("fraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Y = vals as double[];
 
             vals = null;
-            GetOverallProp("pressure", Basis.Undefined.ToString(), ref vals);
+            GetOverallProp("pressure", Bases.Undefined.ToString(), ref vals);
             P = (vals as double[])[0];
         }
 
@@ -678,22 +678,22 @@ namespace COThermoSocket.Core
             Vf = vf;
             Z = z;
 
-            SetOverallProp("pressure", Basis.Undefined.ToString(), new[] { p });
-            SetOverallProp("phasefraction", Basis.Mole.ToString(), new[] { vf });
-            SetOverallProp("fraction", Basis.Mole.ToString(), z);
+            SetOverallProp("pressure", Bases.Undefined.ToString(), new[] { p });
+            SetOverallProp("phasefraction", Bases.Mole.ToString(), new[] { vf });
+            SetOverallProp("fraction", Bases.Mole.ToString(), z);
 
             CalcEquilibrium(new[] { "pressure" }, new[] { "phasefraction" }, "Normal");
 
             object vals = null;
-            GetSinglePhaseProp("fraction", Phase.Liquid.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Liquid.ToString(), Bases.Mole.ToString(), ref vals);
             X = vals as double[];
 
             vals = null;
-            GetSinglePhaseProp("fraction", Phase.Vapor.ToString(), Basis.Mole.ToString(), ref vals);
+            GetSinglePhaseProp("fraction", Phases.Vapor.ToString(), Bases.Mole.ToString(), ref vals);
             Y = vals as double[];
 
             vals = null;
-            GetOverallProp("temperature", Basis.Undefined.ToString(), ref vals);
+            GetOverallProp("temperature", Bases.Undefined.ToString(), ref vals);
             T = (vals as double[])[0];
         }
 
@@ -706,7 +706,7 @@ namespace COThermoSocket.Core
         #endregion
     }
 
-    public enum Phase
+    public enum Phases
     {
         Vapor,
         Liquid,
@@ -715,13 +715,14 @@ namespace COThermoSocket.Core
         Overall
     }
 
-    public enum Basis
+    public enum Bases
     {
         Mole,
         Mass,
         Undefined,
     }
-    public enum FlashType
+
+    public enum FlashTypes
     {
         TP,
         PH,

@@ -34,15 +34,15 @@
                 ],
 
     "MolarDensity":[
-                    {"LongName":"mole/cubic", "ShortName":"mol/cum", "FactorA":1.0},
+                    {"LongName":"mole/cubic meter", "ShortName":"mol/cum", "FactorA":1.0},
                     {"LongName":"kilomole/cubic meter", "ShortName":"kmol/cum", "FactorA":1e3},
-                    {"LongName":"mole/cubic centimeter", "ShortName":"mol/cc", "FactorA":1e-6},
-                    {"LongName":"mole/liter", "ShortName":"mol/l", "FactorA":1e-3}
+                    {"LongName":"mole/cubic centimeter", "ShortName":"mol/cc", "FactorA":1e6},
+                    {"LongName":"mole/liter", "ShortName":"mol/l", "FactorA":1e3}
                 ],
 
     "MassDensity":[
-                    {"LongName":"kilogram/cubic", "ShortName":"kg/cum", "FactorA":1.0},
-                    {"LongName":"gram/cubic meter", "ShortName":"g/cum", "FactorA":1e-3}
+                    {"LongName":"gram/cubic", "ShortName":"g/cum", "FactorA":1.0},
+                    {"LongName":"kilogram/cubic meter", "ShortName":"kg/cum", "FactorA":1e3}
                 ],
 
     "MolarEnthalpy":[
@@ -55,6 +55,18 @@
                     {"LongName":"joule/gram", "ShortName":"J/g", "FactorA":1.0},
                     {"LongName":"kilojoule/kilomole", "ShortName":"kJ/kg", "FactorA":1.0},
                     {"LongName":"kilojoule/gram", "ShortName":"kJ/g", "FactorA":1e3}
+                ],
+    
+    "MolarVolume":[
+                    {"LongName":"cubic meter/mole", "ShortName":"cum/mol", "FactorA":1.0},
+                    {"LongName":"cubic meter/kilomole", "ShortName":"cum/kmol", "FactorA":1e-3},
+                    {"LongName":"cubic centimeter/mole", "ShortName":"cc/mol", "FactorA":1e-6},
+                    {"LongName":"liter/mole", "ShortName":"l/mol", "FactorA":1e-3}
+                ],
+
+    "MassVolume":[
+                    {"LongName":"cubic/gram", "ShortName":"cum/g", "FactorA":1.0},
+                    {"LongName":"cubic meter/kilogram", "ShortName":"cum/kg", "FactorA":1e-3}
                 ]
 
 }

@@ -13,6 +13,8 @@ class UOMs(IntEnum):
     MassDensity = 5
     MolarEnthalpy = 6
     MassEnthalpy = 7
+    MolarVolume = 8
+    MassVolume = 9
 
 
 class UOM(object):

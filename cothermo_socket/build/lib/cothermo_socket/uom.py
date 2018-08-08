@@ -13,10 +13,12 @@ class UOMs(IntEnum):
     MassDensity = 5
     MolarEnthalpy = 6
     MassEnthalpy = 7
+    MolarVolume = 8
+    MassVolume = 9
 
 
 class UOM(object):
-    def __init__(self, uom: UOMs.Unitless, value: float = None, unit: str = None):
+    def __init__(self, uom: UOMs, value: float = None, unit: str = None):
         path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'UOMSet.json')
         with open(path, encoding='utf-8') as f:
             uom_set = json.load(f)
